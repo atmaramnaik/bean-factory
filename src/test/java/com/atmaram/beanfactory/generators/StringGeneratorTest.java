@@ -7,7 +7,7 @@ public class StringGeneratorTest {
     public void withoutRange(){
         StringGenerator stringGenerator=new StringGenerator();
         String val=stringGenerator.generate();
-        assertThat(val.length()).isBetween(0,10000);
+        assertThat(val.length()).isBetween(0,10);
     }
     @Test
     public void withMaxRange(){

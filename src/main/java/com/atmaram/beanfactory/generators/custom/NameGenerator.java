@@ -13,12 +13,15 @@ public class NameGenerator implements Generator<String> {
     int min_length=5;
     int max_length=15;
 
+    public NameGenerator() {
+    }
+
     public NameGenerator(int max_words, int max_length) {
         this.max_words = max_words;
         this.max_length = max_length;
     }
 
-    public NameGenerator(int max_words, int min_words, int min_length, int max_length) {
+    public NameGenerator(int min_words, int max_words, int min_length, int max_length) {
         this.max_words = max_words;
         this.min_words = min_words;
         this.min_length = min_length;

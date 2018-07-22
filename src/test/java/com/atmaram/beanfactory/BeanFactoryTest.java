@@ -58,7 +58,7 @@ public class BeanFactoryTest {
     @Test
     public void should_create_list_with_listgenerator_and_without_memeber_generator() throws InvocationTargetException, IllegalAccessException {
         BeanFactory beanFactory=new BeanFactory();
-        beanFactory.apply(new ListGenerator(2,5)).on(ClassWithList.class).getNames();
+        beanFactory.apply(new ListGenerator<String>(2,5)).on(ClassWithList.class).getNames();
         ClassWithList classWithList=beanFactory.create(ClassWithList.class);
         assertThat(classWithList).isNotNull();
         assertThat(classWithList.getNames()).isNotNull();
@@ -70,12 +70,7 @@ public class BeanFactoryTest {
     @Test
     public void should_create_list_with_listgenerator_and_with_memeber_generator() throws InvocationTargetException, IllegalAccessException {
         BeanFactory beanFactory=new BeanFactory();
-        beanFactory.apply(new ListGenerator(3, 6, new Generator<String>() {
-            @Override
-            public String generate() {
-                return "Hello";
-            }
-        })).on(ClassWithList.class).getNames();
+        beanFactory.apply(new ListGenerator<String>(3, 6, (Generator) () -> "Hello")).on(ClassWithList.class).getNames();
         ClassWithList classWithList=beanFactory.create(ClassWithList.class);
         assertThat(classWithList).isNotNull();
         assertThat(classWithList.getNames()).isNotNull();
@@ -158,12 +153,7 @@ public class BeanFactoryTest {
     public void should_create_map_with_mapgenerator_with_value_generator_and_without_key_generator() throws InvocationTargetException, IllegalAccessException {
         BeanFactory beanFactory=new BeanFactory();
         MapGenerator mapGenerator=new MapGenerator(3,6);
-        mapGenerator.setValueGenerator(new Generator<String>() {
-            @Override
-            public String generate() {
-                return "Hello";
-            }
-        });
+        mapGenerator.setValueGenerator((Generator<String>) () -> "Hello");
         beanFactory.apply(mapGenerator).on(ClassWithMap.class).getPointers();
         ClassWithMap classWithMap=beanFactory.create(ClassWithMap.class);
         assertThat(classWithMap).isNotNull();
@@ -188,12 +178,7 @@ public class BeanFactoryTest {
         BeanFactory beanFactory=new BeanFactory();
         MapGenerator mapGenerator=new MapGenerator(3,6);
         mapGenerator.setKeyGenerator(new IntegerGenerator(100,100000));
-        mapGenerator.setValueGenerator(new Generator<String>() {
-            @Override
-            public String generate() {
-                return "Hello";
-            }
-        });
+        mapGenerator.setValueGenerator((Generator<String>) () -> "Hello");
         beanFactory.apply(mapGenerator).on(ClassWithMap.class).getPointers();
         ClassWithMap classWithMap=beanFactory.create(ClassWithMap.class);
         assertThat(classWithMap).isNotNull();

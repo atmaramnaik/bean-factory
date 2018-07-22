@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.Random;
 
 public class ExpressionEvaluator {
-    public static Date getDateVal(String format,String pattern) {
+    public static Date getDateVal(String format,String pattern) throws ParseException {
         SimpleDateFormat formatter=new SimpleDateFormat(format);
         if(pattern.startsWith("{") && pattern.endsWith("}")){
             String newpat=pattern.substring(1,pattern.length()-1);
@@ -18,12 +18,8 @@ public class ExpressionEvaluator {
 
             Date sDate= null;
             Date eDate=null;
-            try {
-                sDate = formatter.parse(start);
-                eDate=formatter.parse(end);
-            } catch (ParseException e) {
-                return null;
-            }
+            sDate = formatter.parse(start);
+            eDate=formatter.parse(end);
 
             DateGenerator dateGenerator=new DateGenerator(sDate,eDate);
             return dateGenerator.generate();

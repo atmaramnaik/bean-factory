@@ -79,6 +79,24 @@ public class BeanFactory {
             return null;
         }
     }
+    private <T> Generator<T> getGeneratorFromCreate(Class<T> tClass){
+        Generator<T> generator=new Generator<T>() {
+            @Override
+            public T generate() {
+                try {
+                    return BeanFactory.this.create(tClass);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                    return null;
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+        };
+        return generator;
+
+    }
     private void setMemeberGeneratorForList(GeneratorBuilder generatorBuilder){
         ListGenerator listGenerator=(ListGenerator)generatorBuilder.getGenerator();
         if(listGenerator.getMemberGenerator() == null) {
@@ -86,25 +104,12 @@ public class BeanFactory {
             Class memberClass =
                     ((Class) parameterizedType.getActualTypeArguments()[0]);
             Generator generator1 = null;
-            try {
-                generator1 = getDefaultGeneratorBasedOnClass(memberClass);
-                if (generator1 == null) {
-                    generator1 = new Generator() {
-                        @Override
-                        public Object generate() {
-                            try {
-                                return BeanFactory.this.create(memberClass);
-                            } catch (Throwable throwable) {
-                                throwable.printStackTrace();
 
-                            }
-                            return null;
-                        }
-                    };
-                }
-            } catch (Throwable throwable) {
-                throwable.printStackTrace();
+            generator1 = getDefaultGeneratorBasedOnClass(memberClass);
+            if (generator1 == null) {
+                generator1 = getGeneratorFromCreate(memberClass);
             }
+
             listGenerator.setMemberGenerator(generator1);
         }
     }
@@ -115,24 +120,10 @@ public class BeanFactory {
             Class memberClass =
                     ((Class) parameterizedType.getActualTypeArguments()[0]);
             Generator generator1 = null;
-            try {
-                generator1 = getDefaultGeneratorBasedOnClass(memberClass);
-                if (generator1 == null) {
-                    generator1 = new Generator() {
-                        @Override
-                        public Object generate() {
-                            try {
-                                return BeanFactory.this.create(memberClass);
-                            } catch (Throwable throwable) {
-                                throwable.printStackTrace();
 
-                            }
-                            return null;
-                        }
-                    };
-                }
-            } catch (Throwable throwable) {
-                throwable.printStackTrace();
+            generator1 = getDefaultGeneratorBasedOnClass(memberClass);
+            if (generator1 == null) {
+                generator1 = getGeneratorFromCreate(memberClass);
             }
             mapGenerator.setKeyGenerator(generator1);
         }
@@ -141,25 +132,11 @@ public class BeanFactory {
             Class memberClass =
                     ((Class) parameterizedType.getActualTypeArguments()[1]);
             Generator generator1 = null;
-            try {
-                generator1 = getDefaultGeneratorBasedOnClass(memberClass);
-                if (generator1 == null) {
-                    generator1 = new Generator() {
-                        @Override
-                        public Object generate() {
-                            try {
-                                return BeanFactory.this.create(memberClass);
-                            } catch (Throwable throwable) {
-                                throwable.printStackTrace();
-
-                            }
-                            return null;
-                        }
-                    };
-                }
-            } catch (Throwable throwable) {
-                throwable.printStackTrace();
+            generator1 = getDefaultGeneratorBasedOnClass(memberClass);
+            if (generator1 == null) {
+                generator1 = getGeneratorFromCreate(memberClass);
             }
+
             mapGenerator.setValueGenerator(generator1);
         }
     }
@@ -181,17 +158,7 @@ public class BeanFactory {
             } else {
                 ListGenerator generator1 = new ListGenerator(getDefaultGeneratorBasedOnClass((Class) ((ParameterizedType) type).getActualTypeArguments()[0]));
                 if (generator1.getMemberGenerator() == null) {
-                    generator1.setMemberGenerator(new Generator() {
-                        @Override
-                        public Object generate() {
-                            try {
-                                return BeanFactory.this.create((Class) ((ParameterizedType) type).getActualTypeArguments()[0]);
-                            } catch (Throwable throwable) {
-                                throwable.printStackTrace();
-                                return null;
-                            }
-                        }
-                    });
+                    generator1.setMemberGenerator(getGeneratorFromCreate((Class) ((ParameterizedType) type).getActualTypeArguments()[0]));
 
                 }
                 return generator1.generate();
@@ -215,19 +182,8 @@ public class BeanFactory {
             } else {
                 Generator keyGenerator= getDefaultGeneratorBasedOnClass((Class) ((ParameterizedType) type).getActualTypeArguments()[0]);
                 if (keyGenerator == null) {
-                    keyGenerator=new Generator() {
-                        @Override
-                        public Object generate() {
-                            try {
-                                return BeanFactory.this.create((Class) ((ParameterizedType) type).getActualTypeArguments()[0]);
-                            } catch (Throwable throwable) {
-                                throwable.printStackTrace();
-                                return null;
-                            }
-                        }
-                    };
-
-                }
+                    keyGenerator=getGeneratorFromCreate((Class) ((ParameterizedType) type).getActualTypeArguments()[0]);
+                    }
                 mapGenerator.setKeyGenerator(keyGenerator);
             }
             if(valueType instanceof ParameterizedType) {
@@ -245,18 +201,7 @@ public class BeanFactory {
             } else {
                 Generator valueGenerator= getDefaultGeneratorBasedOnClass((Class) ((ParameterizedType) type).getActualTypeArguments()[1]);
                 if (valueGenerator == null) {
-                    valueGenerator=new Generator() {
-                        @Override
-                        public Object generate() {
-                            try {
-                                return BeanFactory.this.create((Class) ((ParameterizedType) type).getActualTypeArguments()[1]);
-                            } catch (Throwable throwable) {
-                                throwable.printStackTrace();
-                                return null;
-                            }
-                        }
-                    };
-
+                    valueGenerator=getGeneratorFromCreate((Class) ((ParameterizedType) type).getActualTypeArguments()[1]);
                 }
                 mapGenerator.setValueGenerator(valueGenerator);
             }
