@@ -2,8 +2,6 @@ package com.atmaram.beanfactory.generators;
 
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;

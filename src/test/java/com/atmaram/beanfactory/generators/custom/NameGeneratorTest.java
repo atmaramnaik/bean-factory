@@ -1,6 +1,5 @@
 package com.atmaram.beanfactory.generators.custom;
 
-import com.atmaram.beanfactory.generators.StringGenerator;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
