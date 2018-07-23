@@ -63,6 +63,8 @@ public class BeanFactory {
                     setMemeberGeneratorForList(generatorBuilder);
                 } else if(generatorBuilder.getGenerator() instanceof MapGenerator){
                     setMemeberGeneratorForMap(generatorBuilder);
+                } else if(generatorBuilder.getGenerator() instanceof SetGenerator){
+                    setMemeberGeneratorForSet(generatorBuilder);
                 }
                 args[0]=generatorBuilder.getGenerator().generate();
                 try {
@@ -111,6 +113,22 @@ public class BeanFactory {
             }
 
             listGenerator.setMemberGenerator(generator1);
+        }
+    }
+    private void setMemeberGeneratorForSet(GeneratorBuilder generatorBuilder){
+        SetGenerator setGenerator=(SetGenerator) generatorBuilder.getGenerator();
+        if(setGenerator.getMemberGenerator() == null) {
+            ParameterizedType parameterizedType = (ParameterizedType) generatorBuilder.getMethod().getGenericParameterTypes()[0];
+            Class memberClass =
+                    ((Class) parameterizedType.getActualTypeArguments()[0]);
+            Generator generator1 = null;
+
+            generator1 = getDefaultGeneratorBasedOnClass(memberClass);
+            if (generator1 == null) {
+                generator1 = getGeneratorFromCreate(memberClass);
+            }
+
+            setGenerator.setMemberGenerator(generator1);
         }
     }
     private void setMemeberGeneratorForMap(GeneratorBuilder generatorBuilder){
@@ -206,7 +224,29 @@ public class BeanFactory {
                 mapGenerator.setValueGenerator(valueGenerator);
             }
             return mapGenerator.generate();
-        } else{
+        } else if (Set.class.isAssignableFrom(((ParameterizedTypeImpl)type).getRawType())) {
+            Type memberType=((ParameterizedType) type).getActualTypeArguments()[0];
+            if(memberType instanceof ParameterizedType) {
+                return new SetGenerator(new Generator() {
+                    @Override
+                    public Object generate() {
+                        try {
+                            return getGeneric(memberType);
+                        } catch (Throwable throwable) {
+                            throwable.printStackTrace();
+                            return null;
+                        }
+                    }
+                }).generate();
+            } else {
+                SetGenerator generator1 = new SetGenerator(getDefaultGeneratorBasedOnClass((Class) ((ParameterizedType) type).getActualTypeArguments()[0]));
+                if (generator1.getMemberGenerator() == null) {
+                    generator1.setMemberGenerator(getGeneratorFromCreate((Class) ((ParameterizedType) type).getActualTypeArguments()[0]));
+
+                }
+                return generator1.generate();
+            }
+        } else {
             return this.create(((ParameterizedTypeImpl) type).getRawType());
         }
     }

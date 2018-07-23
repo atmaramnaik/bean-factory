@@ -1,9 +1,6 @@
 package com.atmaram.beanfactory;
 
-import com.atmaram.beanfactory.generators.Generator;
-import com.atmaram.beanfactory.generators.IntegerGenerator;
-import com.atmaram.beanfactory.generators.ListGenerator;
-import com.atmaram.beanfactory.generators.MapGenerator;
+import com.atmaram.beanfactory.generators.*;
 import com.atmaram.beanfactory.generators.custom.NameGenerator;
 import org.junit.Test;
 
@@ -11,6 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
 public class BeanFactoryTest {
@@ -78,6 +76,53 @@ public class BeanFactoryTest {
         if(classWithList.getNames().size()>0){
             assertThat(classWithList.getNames().get(0)).isInstanceOf(String.class);
             assertThat(classWithList.getNames().get(0)).isEqualTo("Hello");
+        }
+    }
+
+    public static class ClassWithSet{
+        Set<String> names;
+
+        public Set<String> getNames() {
+            return names;
+        }
+
+        public void setNames(Set<String> names) {
+            this.names = names;
+        }
+    }
+    @Test
+    public void should_create_set_without_generators() throws InvocationTargetException, IllegalAccessException {
+        BeanFactory beanFactory=new BeanFactory();
+        ClassWithSet classWithSet=beanFactory.create(ClassWithSet.class);
+        assertThat(classWithSet).isNotNull();
+        assertThat(classWithSet.getNames()).isNotNull();
+        assertThat(classWithSet.getNames().size()).isBetween(0,10);
+        if(classWithSet.getNames().size()>0){
+            assertThat(classWithSet.getNames().iterator().next()).isInstanceOf(String.class);
+        }
+    }
+    @Test
+    public void should_create_set_with_setgenerator_and_without_memeber_generator() throws InvocationTargetException, IllegalAccessException {
+        BeanFactory beanFactory=new BeanFactory();
+        beanFactory.apply(new SetGenerator(2,5)).on(ClassWithSet.class).getNames();
+        ClassWithSet classWithSet=beanFactory.create(ClassWithSet.class);
+        assertThat(classWithSet).isNotNull();
+        assertThat(classWithSet.getNames()).isNotNull();
+        assertThat(classWithSet.getNames().size()).isBetween(2,5);
+        if(classWithSet.getNames().size()>0){
+            assertThat(classWithSet.getNames().iterator().next()).isInstanceOf(String.class);
+        }
+    }
+    @Test
+    public void should_create_set_with_setgenerator_and_with_memeber_generator() throws InvocationTargetException, IllegalAccessException {
+        BeanFactory beanFactory=new BeanFactory();
+        beanFactory.apply(new SetGenerator(3, 6, new StringGenerator())).on(ClassWithSet.class).getNames();
+        ClassWithSet classWithSet=beanFactory.create(ClassWithSet.class);
+        assertThat(classWithSet).isNotNull();
+        assertThat(classWithSet.getNames()).isNotNull();
+        assertThat(classWithSet.getNames().size()).isBetween(3,6);
+        if(classWithSet.getNames().size()>0){
+            assertThat(classWithSet.getNames().iterator().next()).isInstanceOf(String.class);
         }
     }
 
