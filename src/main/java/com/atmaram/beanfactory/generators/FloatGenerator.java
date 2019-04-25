@@ -24,4 +24,13 @@ public class FloatGenerator implements Generator<Float> {
 
         return ret;
     }
+    public static FloatGenerator aFloat(){
+        return new FloatGenerator();
+    }
+    public static FloatGenerator aFloat(float max){
+        return new FloatGenerator(max);
+    }
+    public static FloatGenerator aFloat(float min,float max){
+        return new FloatGenerator(min, max);
+    }
 }

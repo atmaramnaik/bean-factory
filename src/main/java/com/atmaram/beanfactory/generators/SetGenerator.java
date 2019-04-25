@@ -77,4 +77,14 @@ public class SetGenerator<T> implements Generator<Set<T>> {
         }
         return set;
     }
+
+    public static <P> SetGenerator<P> aSet(Generator<P> memberGenerator){
+        return new SetGenerator<>(memberGenerator);
+    }
+    public static <P> SetGenerator<P> aSet(int maxLength,Generator<P> memberGenerator){
+        return new SetGenerator<>(maxLength,memberGenerator);
+    }
+    public static <P> SetGenerator<P> aSet(int minLength,int maxLength,Generator<P> memberGenerator){
+        return new SetGenerator<>(minLength,maxLength,memberGenerator);
+    }
 }

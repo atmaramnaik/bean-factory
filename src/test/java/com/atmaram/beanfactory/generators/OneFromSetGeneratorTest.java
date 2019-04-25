@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static com.atmaram.beanfactory.generators.OneFromSetGenerator.oneOf;
 public class OneFromSetGeneratorTest {
     @Test
     public void should_return_any_one_element_from_set(){
@@ -14,8 +14,7 @@ public class OneFromSetGeneratorTest {
         sourceSet.add("String1");
         sourceSet.add("String2");
         sourceSet.add("String3");
-        OneFromSetGenerator<String> oneFromSetGenerator=new OneFromSetGenerator<>(sourceSet);
-        String generatedString=oneFromSetGenerator.generate();
+        String generatedString=oneOf("String1","String2","String3").generate();
         assertThat(generatedString).isIn(sourceSet);
 
     }

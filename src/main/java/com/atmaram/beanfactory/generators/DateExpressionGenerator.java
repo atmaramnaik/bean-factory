@@ -21,4 +21,7 @@ public class DateExpressionGenerator implements Generator<Date> {
             return null;
         }
     }
+    public static DateExpressionGenerator aDateExpression(String format, String expression) throws ParseException{
+        return new DateExpressionGenerator(format,expression);
+    }
 }

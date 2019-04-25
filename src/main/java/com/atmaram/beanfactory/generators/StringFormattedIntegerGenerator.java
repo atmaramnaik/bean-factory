@@ -1,5 +1,7 @@
 package com.atmaram.beanfactory.generators;
 
+import java.util.Date;
+
 public class StringFormattedIntegerGenerator implements Generator<String>{
     String format;
     Generator<Integer> integerGenerator;
@@ -22,5 +24,15 @@ public class StringFormattedIntegerGenerator implements Generator<String>{
     @Override
     public String generate() {
         return String.format(this.format,integerGenerator.generate());
+    }
+
+    public static StringFormattedIntegerGenerator aStringInteger(String format){
+        return new StringFormattedIntegerGenerator(format);
+    }
+    public static StringFormattedIntegerGenerator aStringInteger(int max,String format){
+        return new StringFormattedIntegerGenerator(format,max);
+    }
+    public static StringFormattedIntegerGenerator aStringInteger(int min,int max,String format){
+        return new StringFormattedIntegerGenerator(format, min, max);
     }
 }

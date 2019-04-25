@@ -24,4 +24,14 @@ public class LongGenerator implements Generator<Long> {
 
         return ret;
     }
+
+    public static LongGenerator aLong(){
+        return new LongGenerator();
+    }
+    public static LongGenerator aLong(long max){
+        return new LongGenerator(max);
+    }
+    public static LongGenerator aLong(long min, long max){
+        return new LongGenerator(min, max);
+    }
 }

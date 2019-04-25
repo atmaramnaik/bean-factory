@@ -13,5 +13,8 @@ public class StringExpressionGenerator implements Generator<String>{
     public String generate() {
         return getVal(this.expression);
     }
+    public static StringExpressionGenerator aStringExpression(String expression){
+        return new StringExpressionGenerator(expression);
+    }
 
 }

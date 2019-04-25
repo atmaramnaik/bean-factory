@@ -31,4 +31,14 @@ public class StringGenerator implements Generator<String> {
         }
         return sb.toString();
     }
+
+    public static StringGenerator aString(){
+        return new StringGenerator();
+    }
+    public static StringGenerator aString(int maxLength){
+        return new StringGenerator(maxLength);
+    }
+    public static StringGenerator aString(int minLength,int maxLength){
+        return new StringGenerator(minLength,maxLength);
+    }
 }

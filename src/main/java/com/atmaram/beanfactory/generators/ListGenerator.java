@@ -78,4 +78,13 @@ public class ListGenerator<T> implements Generator<List<T>> {
         }
         return arrayList;
     }
+    public static <P> ListGenerator<P> aList(Generator<P> memberGenerator){
+        return new ListGenerator<>(memberGenerator);
+    }
+    public static <P> ListGenerator<P> aList(int max,Generator<P> memberGenerator){
+        return new ListGenerator<>(max,memberGenerator);
+    }
+    public static <P> ListGenerator<P> aList(int min,int max,Generator<P> memberGenerator){
+        return new ListGenerator<>(min,max,memberGenerator);
+    }
 }

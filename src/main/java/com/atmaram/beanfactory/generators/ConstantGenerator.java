@@ -11,4 +11,7 @@ public class ConstantGenerator<T> implements Generator<T> {
     public T generate() {
         return this.constantValue;
     }
+    public static <P> ConstantGenerator<P> aConstant(P val){
+        return new ConstantGenerator<>(val);
+    }
 }

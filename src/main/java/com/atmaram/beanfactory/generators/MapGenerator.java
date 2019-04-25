@@ -69,4 +69,15 @@ public class MapGenerator<P,Q> implements Generator<HashMap<P,Q>> {
         }
         return map;
     }
+
+    public static <R,S> MapGenerator<R,S> aMap(Generator<R> keyGenerator, Generator<S> valueGenerator){
+        return new MapGenerator<R,S>(keyGenerator,valueGenerator);
+    }
+    public static <R,S> MapGenerator<R,S> aMap(int maxSize,Generator<R> keyGenerator, Generator<S> valueGenerator){
+        return new MapGenerator<R,S>(maxSize,keyGenerator,valueGenerator);
+    }
+    public static <R,S> MapGenerator<R,S> aMap(int minSize,int maxSize,Generator<R> keyGenerator, Generator<S> valueGenerator){
+        return new MapGenerator<R,S>(minSize,maxSize,keyGenerator,valueGenerator);
+    }
+
 }

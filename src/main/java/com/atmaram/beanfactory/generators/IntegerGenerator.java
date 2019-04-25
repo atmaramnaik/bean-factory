@@ -23,4 +23,14 @@ public class IntegerGenerator implements Generator<Integer> {
         Random random = new Random();
         return random.nextInt(this.max - this.min + 1) + this.min;
     }
+
+    public static IntegerGenerator aInteger(){
+        return new IntegerGenerator();
+    }
+    public static IntegerGenerator aInteger(int max){
+        return new IntegerGenerator(max);
+    }
+    public static IntegerGenerator aInteger(int min, int max){
+        return new IntegerGenerator(min, max);
+    }
 }

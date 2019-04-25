@@ -2,23 +2,21 @@ package com.atmaram.beanfactory.generators;
 
 import org.junit.Test;
 import static org.assertj.core.api.Assertions.*;
+import static com.atmaram.beanfactory.generators.StringGenerator.aString;
 public class StringGeneratorTest {
     @Test
     public void withoutRange(){
-        StringGenerator stringGenerator=new StringGenerator();
-        String val=stringGenerator.generate();
+        String val=aString().generate();
         assertThat(val.length()).isBetween(0,10);
     }
     @Test
     public void withMaxRange(){
-        StringGenerator stringGenerator=new StringGenerator(2);
-        String val=stringGenerator.generate();
+        String val=aString(2).generate();
         assertThat(val.length()).isBetween(0,2);
     }
     @Test
     public void withBothRange(){
-        StringGenerator stringGenerator=new StringGenerator(1000,1001);
-        String val=stringGenerator.generate();
+        String val=aString(1000,1001).generate();
         assertThat(val.length()).isBetween(1000,1001);
     }
 }

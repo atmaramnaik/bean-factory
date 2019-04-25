@@ -1,9 +1,6 @@
 package com.atmaram.beanfactory.generators;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class OneFromSetGenerator<T> implements Generator<T> {
     Set<T> set;
@@ -21,5 +18,16 @@ public class OneFromSetGenerator<T> implements Generator<T> {
             iter.next();
         }
         return iter.next();
+    }
+    public static <P> OneFromSetGenerator<P> oneOf(Set<P> set){
+        return new OneFromSetGenerator<>(set);
+    }
+    public static <P> OneFromSetGenerator<P> oneOf(P ... values){
+        Set<P> set=new HashSet<>();
+        for (P value:
+             values) {
+            set.add(value);
+        }
+        return new OneFromSetGenerator<>(set);
     }
 }

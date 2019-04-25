@@ -5,7 +5,8 @@ import org.junit.Test;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static com.atmaram.beanfactory.generators.IntegerGenerator.aInteger;
+import static com.atmaram.beanfactory.generators.MapGenerator.aMap;
 public class MapGeneratorTest {
     @Test
     public void should_return_empty_map_when_no_key_or_value_generator_defined(){
@@ -18,7 +19,7 @@ public class MapGeneratorTest {
 
     @Test
     public void should_return_map_with_certain_no_of_entries_when_no_range_defined(){
-        MapGenerator<Integer,String> mapGenerator=new MapGenerator<>(new IntegerGenerator(),()->"World");
+        MapGenerator<Integer,String> mapGenerator=aMap(aInteger(),()->"World");
         Map<Integer,String> generatedMap= mapGenerator.generate();
         assertThat(generatedMap).isInstanceOf(Map.class);
         assertThat(generatedMap.size()).isBetween(0,10);
@@ -33,7 +34,7 @@ public class MapGeneratorTest {
     }
     @Test
     public void should_return_map_with_certain_no_of_entries_when_max_range_defined(){
-        MapGenerator<Integer,String> mapGenerator=new MapGenerator<>(5,new IntegerGenerator(),()->"World");
+        MapGenerator<Integer,String> mapGenerator=aMap(5,aInteger(),()->"World");
         Map<Integer,String> generatedMap= mapGenerator.generate();
         assertThat(generatedMap).isInstanceOf(Map.class);
         assertThat(generatedMap.size()).isBetween(0,5);
@@ -48,7 +49,7 @@ public class MapGeneratorTest {
     }
     @Test
     public void should_return_map_with_certain_no_of_entries_when_both_range_defined(){
-        MapGenerator<Integer,String> mapGenerator=new MapGenerator<>(4,5,new IntegerGenerator(),()->"World");
+        MapGenerator<Integer,String> mapGenerator=aMap(4,5,aInteger(),()->"World");
         Map<Integer,String> generatedMap= mapGenerator.generate();
         assertThat(generatedMap).isInstanceOf(Map.class);
         assertThat(generatedMap.size()).isBetween(4,5);

@@ -25,4 +25,13 @@ public class DateGenerator implements Generator<Date> {
         Date rDate=new Date(lFrom + (long)(Math.random() * (lTo - lFrom)));
         return rDate;
     }
+    public static DateGenerator aDate(){
+        return new DateGenerator();
+    }
+    public static DateGenerator aDate(Date to){
+        return new DateGenerator(to);
+    }
+    public static DateGenerator aDate(Date from,Date to){
+        return new DateGenerator(from,to);
+    }
 }

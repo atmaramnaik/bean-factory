@@ -27,5 +27,8 @@ public class StringFormattedDateGenerator implements Generator<String>{
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat(this.format);
         return simpleDateFormat.format(dateGenerator.generate());
     }
+    public static StringFormattedDateGenerator aStringDate(String format, Generator<Date> dateGenerator){
+        return new StringFormattedDateGenerator(format,dateGenerator);
+    }
 }
 

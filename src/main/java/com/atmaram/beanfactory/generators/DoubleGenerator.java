@@ -24,4 +24,14 @@ public class DoubleGenerator implements Generator<Double> {
 
         return ret;
     }
+
+    public static DoubleGenerator aDouble(){
+        return new DoubleGenerator();
+    }
+    public static DoubleGenerator aDouble(double max){
+        return new DoubleGenerator(max);
+    }
+    public static DoubleGenerator aDouble(double min,double max){
+        return new DoubleGenerator(min, max);
+    }
 }
